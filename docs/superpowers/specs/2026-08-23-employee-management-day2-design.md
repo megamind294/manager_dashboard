@@ -19,7 +19,7 @@ Day 2 includes:
 - LocalStorage-backed persistence through a dedicated service layer
 - Seed data only when no stored employee dataset exists
 - Delete confirmation before destructive actions
-- Loading and error state boundaries around employee data operations
+- Loading and recoverable error states around employee data operations
 - Expanded tests for CRUD, persistence, filters, and navigation
 - Updated README and Day 2 documentation
 
@@ -44,11 +44,12 @@ The application will move away from `App.tsx` owning all employee state directly
 
 Planned boundaries:
 
-- `src/app/` — application shell and route configuration
+- `src/app/` — application shell, provider composition, and route configuration
 - `src/pages/` — route-level pages
 - `src/features/employees/` — employee domain components, types, utilities, and forms
 - `src/features/employees/services/employeeService.ts` — storage abstraction for employee CRUD
-- `src/features/employees/hooks/useEmployees.ts` — shared employee state, loading state, errors, and mutations
+- `src/features/employees/context/EmployeesProvider.tsx` — shared employee collection, loading/error state, and mutation actions
+- `src/features/employees/hooks/useEmployees.ts` — typed hook for consuming `EmployeesProvider`
 
 The service interface will be intentionally API-shaped so LocalStorage can be replaced by an HTTP implementation later without rewriting the UI.
 
@@ -76,6 +77,8 @@ It will show:
 - A recent-employees section linking to employee details
 - A clear action to open the full employee directory
 
+Recent employees will be derived by sorting by `joinedAt` descending and taking the first five records.
+
 The existing Day 1 stats logic will be reused where appropriate rather than duplicated.
 
 ## Employee Directory
@@ -94,6 +97,8 @@ It will support:
 - Navigation to employee details
 
 The existing table will be extended with an Actions column rather than replaced with a completely different interaction model.
+
+Search and filter matching will be case-insensitive. Department and status filters will default to `All`.
 
 ## Employee Details
 
@@ -115,7 +120,16 @@ If the employee ID does not exist, the page will render a clear employee-not-fou
 
 `EmployeeForm` will be refactored into a create/edit form.
 
-It will accept an optional employee value. When no employee is supplied, it creates a new employee. When an employee is supplied, it edits that record while preserving the employee ID and join date.
+It will accept an optional employee value. When no employee is supplied, it creates a new employee with status `Active` and the current date as `joinedAt`. When an employee is supplied, it edits that record while preserving the employee ID and original join date.
+
+Editable fields will be:
+
+- Full name
+- Email
+- Role
+- Department
+
+Status changes will remain a separate explicit action rather than being mixed into the general profile form.
 
 Validation will include:
 
@@ -123,7 +137,7 @@ Validation will include:
 - Required role
 - Required department
 - Valid email format
-- Duplicate email prevention against other employee records
+- Duplicate email prevention using case-insensitive comparison against all other employee records
 
 The form will keep user-entered values visible when validation fails.
 
@@ -143,21 +157,24 @@ Storage key: `northstar-hr-employees`.
 
 On first load only, if the storage key is missing, the service will initialize it from the current Day 1 seed employees. After that point, stored data is authoritative.
 
-Malformed stored JSON will be handled as a recoverable data error instead of crashing the app.
+If stored JSON is malformed or LocalStorage access throws, the service will return a typed data error. The UI will show an error panel with a `Reset employee data` action. Resetting explicitly replaces the stored dataset with the Day 1 seed employees and reloads employee state; malformed data will never be overwritten silently.
 
 ## State and Data Flow
 
-`useEmployees` will own the in-browser employee collection and expose:
+`EmployeesProvider` will own the in-browser employee collection and expose:
 
-- employees
-- loading
-- error
-- refresh
-- createEmployee
-- updateEmployee
-- deleteEmployee
+- `employees`
+- `loading`
+- `error`
+- `refresh()`
+- `resetEmployeeData()`
+- `createEmployee()`
+- `updateEmployee()`
+- `deleteEmployee()`
 
-Route-level pages will consume this shared employee state through a provider or equivalent shared hook boundary. Mutations will update LocalStorage through the service and then synchronize React state.
+Status changes will call `updateEmployee()` with a new `status` value.
+
+All route-level pages will consume this shared state through `useEmployees()`. Mutations will persist through `employeeService` first and update React state only after the service succeeds.
 
 Filtering remains derived state and will not be persisted.
 
@@ -168,12 +185,14 @@ Day 2 error behavior will be explicit but lightweight.
 The UI will show:
 
 - Initial loading state while employee data is read
-- Recoverable error state if storage cannot be parsed or accessed
+- Recoverable storage error state with explicit reset action
 - Inline validation errors in forms
 - Employee-not-found state for invalid detail routes
 - Confirmation dialog before deletion
 
 A destructive delete will not happen from a single accidental click.
+
+Service mutation failures will leave the current React collection unchanged and surface an error message instead of pretending the operation succeeded.
 
 ## Styling and UX
 
@@ -197,10 +216,12 @@ Tests will cover:
 
 - Employee service initialization from seed data
 - LocalStorage read/write behavior
+- Malformed-storage error handling and explicit reset
 - Create employee
 - Update employee
+- Status change through update
 - Delete employee
-- Duplicate email validation
+- Case-insensitive duplicate email validation
 - Search plus department/status filtering
 - Route rendering
 - Employee details lookup
@@ -213,7 +234,7 @@ The existing Day 1 utility tests will be retained unless a refactor makes a dire
 
 Add `react-router-dom` for routing.
 
-No additional state-management library will be introduced on Day 2. React state/hooks are sufficient for this scope and avoid unnecessary complexity.
+No additional state-management library will be introduced on Day 2. React context, state, and hooks are sufficient for this scope and avoid unnecessary complexity.
 
 ## Branch and Delivery
 
