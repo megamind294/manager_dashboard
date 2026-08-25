@@ -1,11 +1,15 @@
 import React from 'react';
-import type { Employee } from './types';
+import type { Employee, EmployeeStatus } from './types';
 
 interface EmployeeTableProps {
   employees: Employee[];
+  onView: (employee: Employee) => void;
+  onEdit: (employee: Employee) => void;
+  onDelete: (employee: Employee) => void;
+  onStatusChange: (employee: Employee, status: EmployeeStatus) => void;
 }
 
-export default function EmployeeTable({ employees }: EmployeeTableProps) {
+export default function EmployeeTable({ employees, onView, onEdit, onDelete, onStatusChange }: EmployeeTableProps) {
   if (employees.length === 0) {
     return <div className="empty-state">No employees match your filters.</div>;
   }
@@ -20,6 +24,7 @@ export default function EmployeeTable({ employees }: EmployeeTableProps) {
             <th>Department</th>
             <th>Status</th>
             <th>Joined</th>
+            <th>Actions</th>
           </tr>
         </thead>
         <tbody>
@@ -32,11 +37,25 @@ export default function EmployeeTable({ employees }: EmployeeTableProps) {
               <td>{employee.role}</td>
               <td>{employee.department}</td>
               <td>
-                <span className={`status status-${employee.status.toLowerCase().replace(' ', '-')}`}>
-                  {employee.status}
-                </span>
+                <select
+                  className={`status-select status-${employee.status.toLowerCase().replace(' ', '-')}`}
+                  aria-label={`Change status for ${employee.name}`}
+                  value={employee.status}
+                  onChange={(event) => onStatusChange(employee, event.target.value as EmployeeStatus)}
+                >
+                  <option>Active</option>
+                  <option>On Leave</option>
+                  <option>Inactive</option>
+                </select>
               </td>
               <td>{new Date(employee.joinedAt).toLocaleDateString()}</td>
+              <td>
+                <div className="row-actions">
+                  <button type="button" onClick={() => onView(employee)} aria-label={`View ${employee.name}`}>View</button>
+                  <button type="button" onClick={() => onEdit(employee)} aria-label={`Edit ${employee.name}`}>Edit</button>
+                  <button className="danger-link" type="button" onClick={() => onDelete(employee)} aria-label={`Delete ${employee.name}`}>Delete</button>
+                </div>
+              </td>
             </tr>
           ))}
         </tbody>

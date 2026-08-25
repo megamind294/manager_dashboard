@@ -1,17 +1,20 @@
 import type { Employee } from './types';
 
 export type DepartmentFilter = 'All' | string;
+export type StatusFilter = 'All' | Employee['status'];
 
 export function filterEmployees(
   employees: Employee[],
   searchText: string,
   department: DepartmentFilter,
+  status: StatusFilter = 'All',
 ): Employee[] {
   const normalizedSearch = searchText.trim().toLowerCase();
 
   return employees.filter((employee) => {
     const matchesDepartment =
       department === 'All' || employee.department === department;
+    const matchesStatus = status === 'All' || employee.status === status;
 
     const searchableText = [
       employee.name,
@@ -25,8 +28,20 @@ export function filterEmployees(
     const matchesSearch =
       normalizedSearch.length === 0 || searchableText.includes(normalizedSearch);
 
-    return matchesDepartment && matchesSearch;
+    return matchesDepartment && matchesStatus && matchesSearch;
   });
+}
+
+export function isEmployeeEmailAvailable(
+  employees: Employee[],
+  email: string,
+  currentEmployeeId?: string,
+): boolean {
+  const normalizedEmail = email.trim().toLowerCase();
+  return !employees.some(
+    (employee) =>
+      employee.id !== currentEmployeeId && employee.email.trim().toLowerCase() === normalizedEmail,
+  );
 }
 
 export function getEmployeeStats(employees: Employee[]) {

@@ -16,12 +16,30 @@ Day 1 focuses on a clean frontend foundation:
 - Unit tests for employee filtering/statistics
 - App smoke test
 
+## Day 2 — Standard (in progress)
+
+The current feature branch adds the application data boundary and standard HR safeguards:
+
+- Promise-based LocalStorage employee service with typed recovery errors
+- Provider-backed loading, reset, create, update, and delete state
+- Persistent employee creation across reloads
+- Search plus department and status filters
+- Case-insensitive duplicate-email protection in the UI and service layer
+- Reusable create/edit form that preserves employee IDs and join dates
+- Employee detail view with back navigation
+- URL-backed `/employees` and `/employees/:employeeId` navigation
+- Browser back/forward support and recoverable not-found views
+- Per-employee edit, status-change, and delete controls
+- Confirmation before destructive deletion
+- 31 automated tests covering utilities, persistence, recovery, provider mutations, forms, actions, details, and routing
+
 ## Tech stack
 
 - React 18
 - TypeScript
 - Create React App
 - React Testing Library / Jest
+- Browser History API routing
 - CSS
 
 ## Run locally
@@ -49,7 +67,7 @@ npm run build
 
 ### Day 2 — Standard
 
-Planned direction: richer employee CRUD, routing, persistence/API integration, improved forms and filters, and stronger component structure.
+Remaining work: pull-request CI verification, review, and merge into `main`.
 
 ### Day 3 — Advanced
 
@@ -57,4 +75,4 @@ Planned direction: authentication/roles, analytics, advanced HR workflows, produ
 
 ## Branch
 
-Day 1 work is developed on `feature/employee-management-day1` before merging into `main`.
+Day 2 work is developed on `feature/employee-management-day2` before merging into `main`.
