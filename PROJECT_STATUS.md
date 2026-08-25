@@ -13,13 +13,16 @@ Day 2 — Standard HR features (in progress)
 - Create, read, update, and delete persistence operations
 - Unit coverage for persistence success and failure paths
 - CI test/build checks for every employee-management feature branch
+- Provider-backed loading, recovery, and persistent employee mutations
+- Case-insensitive duplicate-email protection in both form and service layers
+- Combined search, department, and status filtering
+- 20 passing tests and a successful CI-mode production build
 
 ## Next milestone
 
-- Add `EmployeesProvider` and loading/error state
 - Refactor the employee form for create and edit flows
 - Add directory/details routes and employee actions
-- Add status filtering and duplicate-email validation
+- Add delete confirmation and expose update/delete/status actions in the UI
 - Update README and CI, then open the Day 2 pull request
 
 ## Day 2 completion criteria
