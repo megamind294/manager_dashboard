@@ -12,6 +12,7 @@ Day 2 — Standard HR features (in progress)
 - Seed initialization and explicit recovery/reset behavior
 - Create, read, update, and delete persistence operations
 - Unit coverage for persistence success and failure paths
+- CI test/build checks for every employee-management feature branch
 
 ## Next milestone
 
