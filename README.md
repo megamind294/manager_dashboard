@@ -27,9 +27,11 @@ The current feature branch adds the application data boundary and standard HR sa
 - Case-insensitive duplicate-email protection in the UI and service layer
 - Reusable create/edit form that preserves employee IDs and join dates
 - Employee detail view with back navigation
+- URL-backed `/employees` and `/employees/:employeeId` navigation
+- Browser back/forward support and recoverable not-found views
 - Per-employee edit, status-change, and delete controls
 - Confirmation before destructive deletion
-- 24 automated tests covering utilities, persistence, recovery, provider mutations, forms, actions, and details
+- 31 automated tests covering utilities, persistence, recovery, provider mutations, forms, actions, details, and routing
 
 ## Tech stack
 
@@ -37,6 +39,7 @@ The current feature branch adds the application data boundary and standard HR sa
 - TypeScript
 - Create React App
 - React Testing Library / Jest
+- Browser History API routing
 - CSS
 
 ## Run locally
@@ -64,7 +67,7 @@ npm run build
 
 ### Day 2 — Standard
 
-Remaining work: URL-backed employee details routing, not-found handling, final documentation, and pull-request verification.
+Remaining work: pull-request CI verification, review, and merge into `main`.
 
 ### Day 3 — Advanced
 

@@ -232,7 +232,7 @@ The existing Day 1 utility tests will be retained unless a refactor makes a dire
 
 ## Dependencies
 
-Add `react-router-dom` for routing.
+Implementation note: the completed Day 2 scope uses a small typed wrapper around the browser History API instead of adding `react-router-dom`. It provides the specified directory/details URLs, direct links, back/forward navigation, and not-found behavior without increasing the dependency surface.
 
 No additional state-management library will be introduced on Day 2. React context, state, and hooks are sufficient for this scope and avoid unnecessary complexity.
 

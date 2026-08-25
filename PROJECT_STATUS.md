@@ -20,13 +20,15 @@ Day 2 — Standard HR features (in progress)
 - Employee details view with directory navigation
 - Per-employee edit, status-change, and delete actions
 - Explicit confirmation before destructive deletion
-- 24 passing tests and a successful CI-mode production build
+- URL-backed employee directory and details navigation
+- Direct-link and browser history support
+- Recoverable employee and page not-found states
+- 31 automated tests covering the full Day 2 behavior
 
 ## Next milestone
 
-- Add URL-backed directory/details routes and employee-not-found handling
-- Cover route navigation and not-found behavior with tests
-- Update README and CI, then open the Day 2 pull request
+- Run final CI verification
+- Open, review, and merge the Day 2 pull request
 
 ## Day 2 completion criteria
 
