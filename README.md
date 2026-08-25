@@ -25,7 +25,11 @@ The current feature branch adds the application data boundary and standard HR sa
 - Persistent employee creation across reloads
 - Search plus department and status filters
 - Case-insensitive duplicate-email protection in the UI and service layer
-- 20 automated tests covering utilities, persistence, recovery, provider mutations, and forms
+- Reusable create/edit form that preserves employee IDs and join dates
+- Employee detail view with back navigation
+- Per-employee edit, status-change, and delete controls
+- Confirmation before destructive deletion
+- 24 automated tests covering utilities, persistence, recovery, provider mutations, forms, actions, and details
 
 ## Tech stack
 
@@ -60,7 +64,7 @@ npm run build
 
 ### Day 2 — Standard
 
-Remaining work: reusable create/edit UI, employee details routing, employee actions, delete confirmation, final documentation, and pull-request verification.
+Remaining work: URL-backed employee details routing, not-found handling, final documentation, and pull-request verification.
 
 ### Day 3 — Advanced
 

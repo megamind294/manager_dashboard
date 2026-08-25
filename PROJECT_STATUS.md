@@ -16,13 +16,16 @@ Day 2 — Standard HR features (in progress)
 - Provider-backed loading, recovery, and persistent employee mutations
 - Case-insensitive duplicate-email protection in both form and service layers
 - Combined search, department, and status filtering
-- 20 passing tests and a successful CI-mode production build
+- Reusable create/edit employee form that preserves IDs and join dates
+- Employee details view with directory navigation
+- Per-employee edit, status-change, and delete actions
+- Explicit confirmation before destructive deletion
+- 24 passing tests and a successful CI-mode production build
 
 ## Next milestone
 
-- Refactor the employee form for create and edit flows
-- Add directory/details routes and employee actions
-- Add delete confirmation and expose update/delete/status actions in the UI
+- Add URL-backed directory/details routes and employee-not-found handling
+- Cover route navigation and not-found behavior with tests
 - Update README and CI, then open the Day 2 pull request
 
 ## Day 2 completion criteria
