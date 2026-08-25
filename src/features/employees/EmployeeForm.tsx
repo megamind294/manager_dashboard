@@ -2,7 +2,8 @@ import React, { FormEvent, useState } from 'react';
 import type { Employee } from './types';
 
 interface EmployeeFormProps {
-  onAdd: (employee: Employee) => void;
+  existingEmails?: string[];
+  onAdd: (employee: Employee) => void | Promise<unknown>;
   onClose: () => void;
 }
 
@@ -13,11 +14,12 @@ const initialForm = {
   department: 'Engineering',
 };
 
-export default function EmployeeForm({ onAdd, onClose }: EmployeeFormProps) {
+export default function EmployeeForm({ existingEmails = [], onAdd, onClose }: EmployeeFormProps) {
   const [form, setForm] = useState(initialForm);
   const [error, setError] = useState('');
+  const [submitting, setSubmitting] = useState(false);
 
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const values = Object.values(form).map((value) => value.trim());
 
@@ -31,19 +33,30 @@ export default function EmployeeForm({ onAdd, onClose }: EmployeeFormProps) {
       return;
     }
 
-    onAdd({
-      id: `EMP-${Date.now()}`,
-      name: form.name.trim(),
-      email: form.email.trim(),
-      role: form.role.trim(),
-      department: form.department,
-      status: 'Active',
-      joinedAt: new Date().toISOString().slice(0, 10),
-    });
+    if (existingEmails.some((email) => email.trim().toLowerCase() === form.email.trim().toLowerCase())) {
+      setError('An employee with this email already exists.');
+      return;
+    }
 
-    setForm(initialForm);
-    setError('');
-    onClose();
+    setSubmitting(true);
+    try {
+      await onAdd({
+        id: `EMP-${Date.now()}`,
+        name: form.name.trim(),
+        email: form.email.trim(),
+        role: form.role.trim(),
+        department: form.department,
+        status: 'Active',
+        joinedAt: new Date().toISOString().slice(0, 10),
+      });
+      setForm(initialForm);
+      setError('');
+      onClose();
+    } catch (cause) {
+      setError(cause instanceof Error ? cause.message : 'Employee could not be saved.');
+    } finally {
+      setSubmitting(false);
+    }
   }
 
   return (
@@ -83,7 +96,9 @@ export default function EmployeeForm({ onAdd, onClose }: EmployeeFormProps) {
           {error && <p className="form-error">{error}</p>}
           <div className="form-actions">
             <button className="secondary-button" type="button" onClick={onClose}>Cancel</button>
-            <button className="primary-button" type="submit">Add employee</button>
+            <button className="primary-button" type="submit" disabled={submitting}>
+              {submitting ? 'Saving…' : 'Add employee'}
+            </button>
           </div>
         </form>
       </section>

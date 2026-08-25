@@ -1,4 +1,5 @@
 import { seedEmployees } from './data';
+import { isEmployeeEmailAvailable } from './employeeUtils';
 import type { Employee, EmployeeStatus } from './types';
 
 export const EMPLOYEE_STORAGE_KEY = 'northstar-hr-employees';
@@ -108,6 +109,9 @@ export function createEmployeeService(storageSource: StorageSource): EmployeeSer
       if (employees.some((candidate) => candidate.id === employee.id)) {
         throw new EmployeeDataError(`Employee ${employee.id} already exists.`);
       }
+      if (!isEmployeeEmailAvailable(employees, employee.email)) {
+        throw new EmployeeDataError('An employee with this email already exists.');
+      }
       write([employee, ...employees]);
       return { ...employee };
     },
@@ -117,6 +121,10 @@ export function createEmployeeService(storageSource: StorageSource): EmployeeSer
       const index = employees.findIndex((employee) => employee.id === id);
       if (index === -1) {
         throw new EmployeeDataError(`Employee ${id} was not found.`);
+      }
+
+      if (updates.email && !isEmployeeEmailAvailable(employees, updates.email, id)) {
+        throw new EmployeeDataError('An employee with this email already exists.');
       }
 
       const updated = { ...employees[index], ...updates, id, joinedAt: employees[index].joinedAt };

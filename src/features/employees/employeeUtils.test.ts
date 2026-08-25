@@ -1,4 +1,4 @@
-import { filterEmployees, getEmployeeStats } from './employeeUtils';
+import { filterEmployees, getEmployeeStats, isEmployeeEmailAvailable } from './employeeUtils';
 import type { Employee } from './types';
 
 const employees: Employee[] = [
@@ -42,6 +42,20 @@ describe('employee utilities', () => {
       employees[0],
       employees[2],
     ]);
+  });
+
+  test('filters employees by status together with search and department', () => {
+    expect(filterEmployees(employees, '', 'Engineering', 'Active')).toEqual([
+      employees[0],
+      employees[2],
+    ]);
+    expect(filterEmployees(employees, '', 'All', 'On Leave')).toEqual([employees[1]]);
+  });
+
+  test('checks duplicate emails case-insensitively while allowing the edited employee', () => {
+    expect(isEmployeeEmailAvailable(employees, ' MAYA.PATEL@example.com ')).toBe(false);
+    expect(isEmployeeEmailAvailable(employees, 'maya.patel@example.com', 'EMP-001')).toBe(true);
+    expect(isEmployeeEmailAvailable(employees, 'new@northstar.dev')).toBe(true);
   });
 
   test('calculates total, active, leave and department counts', () => {

@@ -135,6 +135,22 @@ describe('employeeService', () => {
     await expect(service.deleteEmployee('missing')).rejects.toBeInstanceOf(EmployeeDataError);
   });
 
+  test('rejects duplicate emails case-insensitively on create and update', async () => {
+    const storage = new MemoryStorage();
+    storage.setItem(EMPLOYEE_STORAGE_KEY, JSON.stringify([newEmployee]));
+    const service = createEmployeeService(storage);
+
+    await expect(
+      service.createEmployee({ ...newEmployee, id: 'EMP-901', email: ' RINKLE@NORTHSTAR.DEV ' }),
+    ).rejects.toThrow('An employee with this email already exists.');
+
+    const secondEmployee = { ...newEmployee, id: 'EMP-902', email: 'second@northstar.dev' };
+    await service.createEmployee(secondEmployee);
+    await expect(
+      service.updateEmployee(secondEmployee.id, { email: 'RINKLE@NORTHSTAR.DEV' }),
+    ).rejects.toThrow('An employee with this email already exists.');
+  });
+
   test('explicit reset replaces malformed storage with seed employees', async () => {
     const storage = new MemoryStorage();
     storage.setItem(EMPLOYEE_STORAGE_KEY, 'invalid');
