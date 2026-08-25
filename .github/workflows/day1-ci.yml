@@ -1,9 +1,9 @@
-name: Day 1 CI
+name: Employee Management CI
 
 on:
   push:
     branches:
-      - 'feature/employee-management-day1'
+      - 'feature/employee-management-day*'
   pull_request:
     branches:
       - main
