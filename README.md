@@ -16,9 +16,9 @@ Day 1 focuses on a clean frontend foundation:
 - Unit tests for employee filtering/statistics
 - App smoke test
 
-## Day 2 — Standard (in progress)
+## Day 2 — Standard (complete)
 
-The current feature branch adds the application data boundary and standard HR safeguards:
+Day 2 adds the application data boundary and standard HR safeguards:
 
 - Promise-based LocalStorage employee service with typed recovery errors
 - Provider-backed loading, reset, create, update, and delete state
@@ -67,12 +67,12 @@ npm run build
 
 ### Day 2 — Standard
 
-Remaining work: pull-request CI verification, review, and merge into `main`.
+Completed and merged to `main` through pull request #2 after tests and the production build passed in GitHub Actions.
 
 ### Day 3 — Advanced
 
 Planned direction: authentication/roles, analytics, advanced HR workflows, production-level polish, and deployment readiness.
 
-## Branch
+## Delivery
 
-Day 2 work is developed on `feature/employee-management-day2` before merging into `main`.
+Day 1 and Day 2 are merged into `main`. Day 3 will continue on its own feature branch.

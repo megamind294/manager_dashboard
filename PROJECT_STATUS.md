@@ -2,7 +2,7 @@
 
 ## Current stage
 
-Day 2 — Standard HR features (in progress)
+Day 3 — Advanced HR features (ready to start)
 
 ## Completed
 
@@ -24,11 +24,13 @@ Day 2 — Standard HR features (in progress)
 - Direct-link and browser history support
 - Recoverable employee and page not-found states
 - 31 automated tests covering the full Day 2 behavior
+- Day 2 pull request verified by GitHub Actions and merged to `main`
 
 ## Next milestone
 
-- Run final CI verification
-- Open, review, and merge the Day 2 pull request
+- Define the Day 3 architecture and completion criteria
+- Add authentication and role-based admin/employee views
+- Add advanced HR workflows, analytics, and deployment readiness
 
 ## Day 2 completion criteria
 
