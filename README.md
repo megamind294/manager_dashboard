@@ -78,8 +78,12 @@ In progress on `feature/employee-management-day3`:
 - Read-only Employee directory and profile experience
 - Guarded mutation entry points
 - Explicit documentation that the role preview is not production authentication
+- Typed LocalStorage performance-review service
+- Seeded review records with employee lookup, create, and update operations
+- Review rating and duplicate employee/period validation
+- Explicit malformed-data recovery through reset
 
-Next: persistent performance reviews, role-scoped payroll summaries, activity history, workforce analytics, and deployment readiness.
+The suite now contains 44 tests. Next: connect performance reviews to the role-aware UI, then add payroll summaries, activity history, workforce analytics, and deployment readiness.
 
 ## Delivery
 

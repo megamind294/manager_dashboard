@@ -31,10 +31,16 @@ Day 3 — Advanced HR features (in progress)
 - Read-only status rendering for Employee sessions
 - Guarded create, edit, and delete entry points
 - Role-switching and permission coverage across provider, table, and app tests
+- Typed asynchronous performance-review service
+- Seed initialization and explicit review-data reset behavior
+- Employee-scoped review lookup and persistent create/update operations
+- Rating, identity, and duplicate employee/period validation
+- Recovery-safe malformed review storage handling
+- 44 automated tests across the Day 1–3 feature set
 
 ## Next milestone
 
-- Add typed, persistent performance-review workflows
+- Connect performance reviews to a provider and role-aware UI
 - Add role-scoped payroll summaries and activity history
 - Add workforce analytics, final polish, and deployment readiness
 
