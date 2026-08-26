@@ -72,6 +72,24 @@ h2 { margin-bottom: 5px; }
 .reviews-empty, .reviews-error { margin: 18px 0 0; padding: 18px; border-radius: 12px; background: #f8fafc; color: #64748b; }
 .reviews-error { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
 .reviews-error p { margin: 0; color: #991b1b; }
+.insight-panel { margin: 22px 0; padding: 22px; border: 1px solid #e7eaf0; border-radius: 16px; background: #fff; box-shadow: 0 8px 28px rgba(15,23,42,.04); }
+.section-heading { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+.section-heading h2, .section-heading h3 { margin: 0; }
+.section-heading > span { color: #64748b; font-size: 13px; }
+.insight-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; margin-top: 18px; }
+.insight-grid article { padding: 16px; border-radius: 12px; background: #f8fafc; }
+.insight-grid span, .payroll-card span { color: #64748b; font-size: 13px; }
+.insight-grid strong { display: block; margin-top: 8px; font-size: 22px; }
+.payroll-list { display: grid; gap: 12px; margin-top: 18px; }
+.payroll-card { display: grid; grid-template-columns: minmax(120px, .8fr) 2fr auto; align-items: center; gap: 18px; padding: 16px; border: 1px solid #e7eaf0; border-radius: 12px; background: #f8fafc; }
+.payroll-card > div:first-child { display: grid; gap: 5px; }
+.payroll-card dl { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin: 0; }
+.payroll-card dt { color: #64748b; font-size: 11px; font-weight: 800; text-transform: uppercase; }
+.payroll-card dd { margin: 4px 0 0; font-weight: 700; }
+.activity-list { display: grid; gap: 2px; margin: 18px 0 0; padding: 0; list-style: none; }
+.activity-list li { display: grid; grid-template-columns: 1fr 1.5fr auto; gap: 14px; padding: 13px 0; border-top: 1px solid #eef1f5; }
+.activity-list span, .activity-list time, .muted-state { color: #64748b; font-size: 13px; }
+.muted-state { margin: 16px 0 0; }
 .empty-state { padding: 50px 20px; text-align: center; color: #64748b; }
 .modal-backdrop { position: fixed; inset: 0; z-index: 10; display: grid; place-items: center; padding: 20px; background: rgba(15,23,42,.55); }
 .employee-form-card { width: min(520px, 100%); padding: 24px; }
@@ -94,6 +112,8 @@ h2 { margin-bottom: 5px; }
   .details-heading { flex-direction: column; }
   .details-actions { width: 100%; flex-wrap: wrap; }
   .review-card-footer, .reviews-error { align-items: flex-start; flex-direction: column; }
+  .insight-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .payroll-card, .activity-list li { grid-template-columns: 1fr; }
 }
 
 @media (max-width: 520px) {
@@ -101,4 +121,5 @@ h2 { margin-bottom: 5px; }
   .main-content { padding: 16px; }
   .page-header .primary-button { width: 100%; }
   .details-grid { grid-template-columns: 1fr; }
+  .insight-grid, .payroll-card dl { grid-template-columns: 1fr; }
 }

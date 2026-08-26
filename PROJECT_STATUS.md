@@ -2,7 +2,7 @@
 
 ## Current stage
 
-Day 3 — Advanced HR features (in progress)
+Day 3 — Advanced HR features (completion candidate)
 
 ## Completed
 
@@ -41,11 +41,18 @@ Day 3 — Advanced HR features (in progress)
 - Admin-only draft visibility and review publishing controls
 - Published-only, read-only review history for Employee sessions
 - 49 automated tests across the Day 1–3 feature set
+- Typed LocalStorage payroll service with employee lookup, updates, and recovery
+- Role-scoped compensation UI with Admin-only mutations and identity-scoped provider reads
+- Validated payroll summary and payment-state invariants
+- Persistent append-only activity history with rollback-backed audited mutations
+- Workforce analytics derived from current, non-orphaned application state
+- Synchronized dependency lockfile and reproducible `npm ci` workflow
+- 71 automated tests across the Day 1–3 feature set
 
 ## Next milestone
 
-- Add role-scoped payroll summaries and activity history
-- Add workforce analytics, final polish, and deployment readiness
+- Review the completed Day 3 diff
+- Verify pull request #3 in GitHub Actions and merge to `main`
 
 ## Day 2 completion criteria
 

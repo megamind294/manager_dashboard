@@ -1,4 +1,6 @@
 import React, { useMemo } from 'react';
+import { useActivity } from '../activity/ActivityProvider';
+import { runAuditedMutation } from '../activity/auditedMutation';
 import { useReviews } from './ReviewsProvider';
 
 export default function PerformanceReviews({
@@ -9,12 +11,28 @@ export default function PerformanceReviews({
   canManage: boolean;
 }) {
   const { reviews, loading, error, resetReviews, updateReview } = useReviews();
+  const { recordActivity } = useActivity();
   const visibleReviews = useMemo(
     () => reviews.filter((review) => (
       review.employeeId === employeeId && (canManage || review.status === 'Published')
     )),
     [canManage, employeeId, reviews],
   );
+
+  async function publishReview(id: string, period: string) {
+    const previous = reviews.find((review) => review.id === id);
+    if (!previous) return;
+    await runAuditedMutation({
+      mutate: () => updateReview(id, { status: 'Published', updatedAt: new Date().toISOString().slice(0, 10) }),
+      audit: () => recordActivity({ actor: 'Admin', action: 'Published review', subject: `${employeeId} · ${period}` }),
+      rollback: () => updateReview(id, { status: previous.status, updatedAt: previous.updatedAt }),
+    });
+  }
+
+  async function recoverReviews() {
+    await recordActivity({ actor: 'Admin', action: 'Requested review data recovery', subject: employeeId });
+    await resetReviews();
+  }
 
   return (
     <section className="reviews-section" aria-labelledby="performance-reviews-heading">
@@ -32,7 +50,7 @@ export default function PerformanceReviews({
         <div className="reviews-error" role="alert">
           <p>{error}</p>
           {canManage && (
-            <button className="secondary-button" type="button" onClick={() => void resetReviews()}>
+            <button className="secondary-button" type="button" onClick={() => void recoverReviews()}>
               Reset review data
             </button>
           )}
@@ -61,10 +79,7 @@ export default function PerformanceReviews({
                     className="primary-button"
                     type="button"
                     aria-label={`Publish ${review.period} review`}
-                    onClick={() => void updateReview(review.id, {
-                      status: 'Published',
-                      updatedAt: new Date().toISOString().slice(0, 10),
-                    })}
+                    onClick={() => void publishReview(review.id, review.period)}
                   >
                     Publish review
                   </button>

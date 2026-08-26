@@ -5,6 +5,7 @@ export type DemoRole = 'admin' | 'employee';
 interface SessionContextValue {
   role: DemoRole;
   canManageEmployees: boolean;
+  employeeId: string;
   setRole: (role: DemoRole) => void;
 }
 
@@ -19,7 +20,7 @@ export function SessionProvider({
 }) {
   const [role, setRole] = useState<DemoRole>(initialRole);
   const value = useMemo(
-    () => ({ role, setRole, canManageEmployees: role === 'admin' }),
+    () => ({ role, setRole, canManageEmployees: role === 'admin', employeeId: 'EMP-001' }),
     [role],
   );
 

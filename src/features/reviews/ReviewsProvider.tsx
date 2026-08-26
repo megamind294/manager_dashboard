@@ -57,6 +57,7 @@ export function ReviewsProvider({
         setReviews(await service.resetReviews());
       } catch (cause) {
         setError(errorMessage(cause));
+        throw cause;
       } finally {
         setLoading(false);
       }

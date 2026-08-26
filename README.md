@@ -69,9 +69,9 @@ npm run build
 
 Completed and merged to `main` through pull request #2 after tests and the production build passed in GitHub Actions.
 
-### Day 3 — Advanced
+### Day 3 — Advanced (completion candidate)
 
-In progress on `feature/employee-management-day3`:
+Implemented on `feature/employee-management-day3`:
 
 - Typed Admin and Employee demo sessions
 - Permission-aware employee management controls
@@ -86,11 +86,18 @@ In progress on `feature/employee-management-day3`:
 - Employee-scoped review history on profile pages
 - Admin-only draft visibility and publishing controls
 - Published-only, read-only review history for Employee sessions
+- Typed, persistent payroll summaries with recovery handling
+- Admin-only payroll operations and employee-identity-scoped reads at the provider boundary
+- Validated payroll totals, dates, periods, and payment-state invariants
+- Persistent append-only activity history with rollback-backed audited mutations
+- Workforce analytics derived from valid current-employee, review, and payroll state
+- Responsive advanced HR panels and explicit empty/error/permission states
+- Reproducible `npm ci` installs with a synchronized dependency lockfile
 
-The suite now contains 49 tests. Next: add role-scoped payroll summaries and activity history, followed by workforce analytics and deployment readiness.
+The suite now contains 71 tests. The final delivery gate is GitHub Actions verification and merge of pull request #3.
 
-Employee and review records currently use browser-local persistence for the portfolio demo. A production deployment would move identity, authorization, and HR records behind an authenticated server API.
+Employee, review, payroll, and activity records currently use browser-local persistence for the portfolio demo. A production deployment would move identity, authorization, and HR records behind an authenticated server API. The visible role switcher demonstrates permission-aware UI behavior; it does not authenticate a real user.
 
 ## Delivery
 
-Day 1 and Day 2 are merged into `main`. Day 3 will continue on its own feature branch.
+Day 1 and Day 2 are merged into `main`. Day 3 is awaiting final CI and merge from pull request #3.
