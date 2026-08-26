@@ -82,8 +82,12 @@ In progress on `feature/employee-management-day3`:
 - Seeded review records with employee lookup, create, and update operations
 - Review rating and duplicate employee/period validation
 - Explicit malformed-data recovery through reset
+- Provider-backed review loading, persistence, and explicit recovery UI
+- Employee-scoped review history on profile pages
+- Admin-only draft visibility and publishing controls
+- Published-only, read-only review history for Employee sessions
 
-The suite now contains 44 tests. Next: connect performance reviews to the role-aware UI, then add payroll summaries, activity history, workforce analytics, and deployment readiness.
+The suite now contains 49 tests. Next: add role-scoped payroll summaries and activity history, followed by workforce analytics and deployment readiness.
 
 ## Delivery
 

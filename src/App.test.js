@@ -82,3 +82,30 @@ test('switches to a read-only employee view', async () => {
   expect(screen.queryByLabelText('Change status for Maya Patel')).not.toBeInTheDocument();
   expect(screen.getByRole('button', { name: 'View Maya Patel' })).toBeInTheDocument();
 });
+
+test('shows employee reviews and lets admins publish a draft', async () => {
+  window.history.replaceState({}, '', '/employees/EMP-003');
+  render(<App />);
+
+  expect(await screen.findByRole('heading', { name: 'Noah Smith' })).toBeInTheDocument();
+  expect(await screen.findByRole('heading', { name: /performance reviews/i })).toBeInTheDocument();
+  expect(screen.getByText('2026 H1')).toBeInTheDocument();
+  expect(screen.getByText('Draft')).toBeInTheDocument();
+
+  fireEvent.click(screen.getByRole('button', { name: /publish 2026 h1 review/i }));
+  expect(await screen.findByText('Published')).toBeInTheDocument();
+  expect(screen.queryByRole('button', { name: /publish 2026 h1 review/i })).not.toBeInTheDocument();
+});
+
+test('hides draft reviews and review controls from employee mode', async () => {
+  window.history.replaceState({}, '', '/employees/EMP-003');
+  render(<App />);
+
+  await screen.findByRole('heading', { name: 'Noah Smith' });
+  fireEvent.change(screen.getByLabelText('Preview role'), { target: { value: 'employee' } });
+
+  expect(await screen.findByRole('heading', { name: /performance reviews/i })).toBeInTheDocument();
+  expect(screen.getByText(/no published reviews yet/i)).toBeInTheDocument();
+  expect(screen.queryByText('Draft')).not.toBeInTheDocument();
+  expect(screen.queryByRole('button', { name: /publish/i })).not.toBeInTheDocument();
+});

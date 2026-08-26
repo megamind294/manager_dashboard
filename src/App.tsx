@@ -6,6 +6,8 @@ import { EmployeesProvider, useEmployees } from './features/employees/EmployeesP
 import StatsCards from './features/employees/StatsCards';
 import { filterEmployees, getEmployeeStats } from './features/employees/employeeUtils';
 import type { Employee, EmployeeStatus } from './features/employees/types';
+import PerformanceReviews from './features/reviews/PerformanceReviews';
+import { ReviewsProvider } from './features/reviews/ReviewsProvider';
 import { DemoRole, SessionProvider, useSession } from './features/session/SessionProvider';
 import { employeePath, parseRoute } from './navigation';
 
@@ -160,6 +162,7 @@ function EmployeeDashboard() {
               <div><dt>Status</dt><dd>{selectedEmployee.status}</dd></div>
               <div><dt>Joined</dt><dd>{new Date(selectedEmployee.joinedAt).toLocaleDateString()}</dd></div>
             </dl>
+            <PerformanceReviews employeeId={selectedEmployee.id} canManage={canManageEmployees} />
           </section>
         ) : route.name === 'employee' ? (
           <section className="panel employee-details">
@@ -240,7 +243,9 @@ function App() {
   return (
     <SessionProvider>
       <EmployeesProvider>
-        <EmployeeDashboard />
+        <ReviewsProvider>
+          <EmployeeDashboard />
+        </ReviewsProvider>
       </EmployeesProvider>
     </SessionProvider>
   );
