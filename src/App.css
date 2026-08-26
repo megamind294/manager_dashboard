@@ -12,6 +12,9 @@ button { cursor: pointer; }
 .nav-item-active { background: #1f2937; color: #fff; }
 .main-content { padding: 36px; min-width: 0; }
 .page-header, .panel-heading, .form-heading, .form-actions { display: flex; align-items: center; justify-content: space-between; gap: 20px; }
+.header-actions { display: flex; align-items: flex-end; gap: 12px; }
+.role-switcher { display: grid; gap: 5px; color: #64748b; font-size: 12px; font-weight: 700; }
+.role-switcher select { min-width: 120px; border: 1px solid #d8dee8; border-radius: 10px; padding: 9px 11px; background: #fff; color: #172033; }
 h1, h2, p { margin-top: 0; }
 h1 { margin-bottom: 8px; font-size: clamp(28px, 4vw, 40px); }
 h2 { margin-bottom: 5px; }
@@ -69,6 +72,7 @@ h2 { margin-bottom: 5px; }
   .main-content { padding: 22px; }
   .stats-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .panel-heading, .page-header { align-items: flex-start; flex-direction: column; }
+  .header-actions { width: 100%; align-items: stretch; flex-direction: column; }
   .filters { width: 100%; flex-direction: column; }
   .filters input { min-width: 0; width: 100%; }
   .details-heading { flex-direction: column; }

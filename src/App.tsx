@@ -6,10 +6,12 @@ import { EmployeesProvider, useEmployees } from './features/employees/EmployeesP
 import StatsCards from './features/employees/StatsCards';
 import { filterEmployees, getEmployeeStats } from './features/employees/employeeUtils';
 import type { Employee, EmployeeStatus } from './features/employees/types';
+import { DemoRole, SessionProvider, useSession } from './features/session/SessionProvider';
 import { employeePath, parseRoute } from './navigation';
 
 function EmployeeDashboard() {
   const { employees, loading, error, createEmployee, updateEmployee, deleteEmployee, resetEmployeeData } = useEmployees();
+  const { role, setRole, canManageEmployees } = useSession();
   const [search, setSearch] = useState('');
   const [department, setDepartment] = useState('All');
   const [status, setStatus] = useState<'All' | EmployeeStatus>('All');
@@ -45,16 +47,19 @@ function EmployeeDashboard() {
   }
 
   function openCreateForm() {
+    if (!canManageEmployees) return;
     setEditingEmployeeId(null);
     setIsFormOpen(true);
   }
 
   function openEditForm(employee: Employee) {
+    if (!canManageEmployees) return;
     setEditingEmployeeId(employee.id);
     setIsFormOpen(true);
   }
 
   async function saveEmployee(employee: Employee) {
+    if (!canManageEmployees) return;
     if (editingEmployeeId) {
       await updateEmployee(employee.id, {
         name: employee.name,
@@ -68,6 +73,7 @@ function EmployeeDashboard() {
   }
 
   async function removeEmployee(employee: Employee) {
+    if (!canManageEmployees) return;
     if (!window.confirm(`Delete ${employee.name}? This action cannot be undone.`)) return;
     await deleteEmployee(employee.id);
     if (route.name === 'employee' && route.employeeId === employee.id) navigate('/employees');
@@ -110,11 +116,24 @@ function EmployeeDashboard() {
           <div>
             <p className="eyebrow">People operations</p>
             <h1>Employee management</h1>
-            <p className="page-subtitle">A persistent Day 2 workspace for managing your team.</p>
+            <p className="page-subtitle">
+              {canManageEmployees ? 'Admin workspace with employee management access.' : 'Read-only employee view.'}
+            </p>
           </div>
-          <button className="primary-button" type="button" onClick={openCreateForm}>
-            + Add employee
-          </button>
+          <div className="header-actions">
+            <label className="role-switcher">
+              Preview role
+              <select value={role} onChange={(event) => setRole(event.target.value as DemoRole)}>
+                <option value="admin">Admin</option>
+                <option value="employee">Employee</option>
+              </select>
+            </label>
+            {canManageEmployees && (
+              <button className="primary-button" type="button" onClick={openCreateForm}>
+                + Add employee
+              </button>
+            )}
+          </div>
         </header>
 
         {route.name === 'employee' && selectedEmployee ? (
@@ -127,8 +146,12 @@ function EmployeeDashboard() {
               </div>
               <div className="details-actions">
                 <button className="secondary-button" type="button" onClick={() => navigate('/employees')}>Back to directory</button>
-                <button className="primary-button" type="button" onClick={() => openEditForm(selectedEmployee)}>Edit employee</button>
-                <button className="danger-button" type="button" onClick={() => void removeEmployee(selectedEmployee)}>Delete employee</button>
+                {canManageEmployees && (
+                  <>
+                    <button className="primary-button" type="button" onClick={() => openEditForm(selectedEmployee)}>Edit employee</button>
+                    <button className="danger-button" type="button" onClick={() => void removeEmployee(selectedEmployee)}>Delete employee</button>
+                  </>
+                )}
               </div>
             </div>
             <dl className="details-grid">
@@ -190,6 +213,7 @@ function EmployeeDashboard() {
 
               <EmployeeTable
                 employees={visibleEmployees}
+                canManage={canManageEmployees}
                 onView={(employee) => navigate(employeePath(employee.id))}
                 onEdit={openEditForm}
                 onDelete={(employee) => void removeEmployee(employee)}
@@ -214,9 +238,11 @@ function EmployeeDashboard() {
 
 function App() {
   return (
-    <EmployeesProvider>
-      <EmployeeDashboard />
-    </EmployeesProvider>
+    <SessionProvider>
+      <EmployeesProvider>
+        <EmployeeDashboard />
+      </EmployeesProvider>
+    </SessionProvider>
   );
 }
 

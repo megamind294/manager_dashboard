@@ -68,3 +68,17 @@ test('requires confirmation before deleting an employee', async () => {
   expect(screen.queryByText('Maya Patel')).not.toBeInTheDocument();
   confirm.mockRestore();
 });
+
+test('switches to a read-only employee view', async () => {
+  render(<App />);
+  await screen.findByRole('heading', { name: /employee management/i });
+
+  fireEvent.change(screen.getByLabelText('Preview role'), { target: { value: 'employee' } });
+
+  expect(screen.getByText(/read-only employee view/i)).toBeInTheDocument();
+  expect(screen.queryByRole('button', { name: /add employee/i })).not.toBeInTheDocument();
+  expect(screen.queryByRole('button', { name: 'Edit Maya Patel' })).not.toBeInTheDocument();
+  expect(screen.queryByRole('button', { name: 'Delete Maya Patel' })).not.toBeInTheDocument();
+  expect(screen.queryByLabelText('Change status for Maya Patel')).not.toBeInTheDocument();
+  expect(screen.getByRole('button', { name: 'View Maya Patel' })).toBeInTheDocument();
+});

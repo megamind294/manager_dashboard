@@ -71,7 +71,15 @@ Completed and merged to `main` through pull request #2 after tests and the produ
 
 ### Day 3 — Advanced
 
-Planned direction: authentication/roles, analytics, advanced HR workflows, production-level polish, and deployment readiness.
+In progress on `feature/employee-management-day3`:
+
+- Typed Admin and Employee demo sessions
+- Permission-aware employee management controls
+- Read-only Employee directory and profile experience
+- Guarded mutation entry points
+- Explicit documentation that the role preview is not production authentication
+
+Next: persistent performance reviews, role-scoped payroll summaries, activity history, workforce analytics, and deployment readiness.
 
 ## Delivery
 
