@@ -89,6 +89,8 @@ In progress on `feature/employee-management-day3`:
 
 The suite now contains 49 tests. Next: add role-scoped payroll summaries and activity history, followed by workforce analytics and deployment readiness.
 
+Employee and review records currently use browser-local persistence for the portfolio demo. A production deployment would move identity, authorization, and HR records behind an authenticated server API.
+
 ## Delivery
 
 Day 1 and Day 2 are merged into `main`. Day 3 will continue on its own feature branch.
