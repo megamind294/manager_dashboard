@@ -39,3 +39,22 @@ test('exposes view, edit, status, and delete actions for each employee', () => {
   expect(onStatusChange).toHaveBeenCalledWith(employee, 'On Leave');
   expect(onDelete).toHaveBeenCalledWith(employee);
 });
+
+test('renders employee rows as read only without management permission', () => {
+  render(
+    <EmployeeTable
+      employees={[employee]}
+      canManage={false}
+      onView={jest.fn()}
+      onEdit={jest.fn()}
+      onDelete={jest.fn()}
+      onStatusChange={jest.fn()}
+    />,
+  );
+
+  expect(screen.getByRole('button', { name: 'View Maya Patel' })).toBeInTheDocument();
+  expect(screen.queryByRole('button', { name: 'Edit Maya Patel' })).not.toBeInTheDocument();
+  expect(screen.queryByRole('button', { name: 'Delete Maya Patel' })).not.toBeInTheDocument();
+  expect(screen.queryByLabelText('Change status for Maya Patel')).not.toBeInTheDocument();
+  expect(screen.getByText('Active')).toBeInTheDocument();
+});

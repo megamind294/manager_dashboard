@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from '@testing-library/react';
+import { act, fireEvent, render, screen } from '@testing-library/react';
 import App from './App';
 
 beforeEach(() => {
@@ -67,4 +67,76 @@ test('requires confirmation before deleting an employee', async () => {
   expect(await screen.findByText('4 of 4 employees')).toBeInTheDocument();
   expect(screen.queryByText('Maya Patel')).not.toBeInTheDocument();
   confirm.mockRestore();
+});
+
+test('switches to a read-only employee view', async () => {
+  render(<App />);
+  await screen.findByRole('heading', { name: /employee management/i });
+
+  await act(async () => { fireEvent.change(screen.getByLabelText('Preview role'), { target: { value: 'employee' } }); });
+
+  expect(screen.getByText(/read-only employee view/i)).toBeInTheDocument();
+  expect(screen.queryByRole('button', { name: /add employee/i })).not.toBeInTheDocument();
+  expect(screen.queryByRole('button', { name: 'Edit Maya Patel' })).not.toBeInTheDocument();
+  expect(screen.queryByRole('button', { name: 'Delete Maya Patel' })).not.toBeInTheDocument();
+  expect(screen.queryByLabelText('Change status for Maya Patel')).not.toBeInTheDocument();
+  expect(screen.getByRole('button', { name: 'View Maya Patel' })).toBeInTheDocument();
+});
+
+test('shows employee reviews and lets admins publish a draft', async () => {
+  window.history.replaceState({}, '', '/employees/EMP-003');
+  render(<App />);
+
+  expect(await screen.findByRole('heading', { name: 'Noah Smith' })).toBeInTheDocument();
+  expect(await screen.findByRole('heading', { name: /performance reviews/i })).toBeInTheDocument();
+  expect(screen.getByText('2026 H1')).toBeInTheDocument();
+  expect(screen.getByText('Draft')).toBeInTheDocument();
+
+  fireEvent.click(screen.getByRole('button', { name: /publish 2026 h1 review/i }));
+  expect(await screen.findByText('Published')).toBeInTheDocument();
+  expect(screen.queryByRole('button', { name: /publish 2026 h1 review/i })).not.toBeInTheDocument();
+});
+
+test('hides draft reviews and review controls from employee mode', async () => {
+  window.history.replaceState({}, '', '/employees/EMP-003');
+  render(<App />);
+
+  await screen.findByRole('heading', { name: 'Noah Smith' });
+  await act(async () => { fireEvent.change(screen.getByLabelText('Preview role'), { target: { value: 'employee' } }); });
+
+  expect(await screen.findByRole('heading', { name: /performance reviews/i })).toBeInTheDocument();
+  expect(screen.getByText(/no published reviews yet/i)).toBeInTheDocument();
+  expect(screen.queryByText('Draft')).not.toBeInTheDocument();
+  expect(screen.queryByRole('button', { name: /publish/i })).not.toBeInTheDocument();
+});
+
+test('derives workforce analytics from the current application state', async () => {
+  render(<App />);
+
+  expect(await screen.findByRole('heading', { name: /workforce insights/i })).toBeInTheDocument();
+  expect(screen.getByText('40%')).toBeInTheDocument();
+  expect(screen.getByText('PLN 32,150')).toBeInTheDocument();
+});
+
+test('lets an admin complete scheduled payroll and records the activity', async () => {
+  window.history.replaceState({}, '', '/employees/EMP-003');
+  render(<App />);
+
+  expect(await screen.findByRole('heading', { name: /compensation/i })).toBeInTheDocument();
+  fireEvent.click(screen.getByRole('button', { name: /mark 2026-08 payroll paid/i }));
+
+  expect(await screen.findByText('Paid')).toBeInTheDocument();
+  expect(screen.getByText('Marked payroll paid')).toBeInTheDocument();
+  expect(screen.getAllByText('Noah Smith · 2026-08')).toHaveLength(2);
+});
+
+test('limits employee payroll visibility to the demo employee identity', async () => {
+  window.history.replaceState({}, '', '/employees/EMP-002');
+  render(<App />);
+  await screen.findByRole('heading', { name: 'Lena Kowalska' });
+
+  await act(async () => { fireEvent.change(screen.getByLabelText('Preview role'), { target: { value: 'employee' } }); });
+
+  expect(await screen.findByText(/payroll is private to this employee/i)).toBeInTheDocument();
+  expect(screen.queryByText('PLN 13,100')).not.toBeInTheDocument();
 });
