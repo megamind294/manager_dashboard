@@ -2,7 +2,7 @@
 
 ## Current stage
 
-Day 3 — Advanced HR features (completion candidate)
+Day 3 — Advanced HR features (complete)
 
 ## Completed
 
@@ -48,11 +48,12 @@ Day 3 — Advanced HR features (completion candidate)
 - Workforce analytics derived from current, non-orphaned application state
 - Synchronized dependency lockfile and reproducible `npm ci` workflow
 - 71 automated tests across the Day 1–3 feature set
+- GitHub Actions run #22 passed dependency installation, tests, and production build
+- Day 3 pull request #3 merged to `main`
 
-## Next milestone
+## Project completion
 
-- Review the completed Day 3 diff
-- Verify pull request #3 in GitHub Actions and merge to `main`
+The staged Day 1–3 employee-management roadmap is complete and verified.
 
 ## Day 2 completion criteria
 
