@@ -69,9 +69,9 @@ npm run build
 
 Completed and merged to `main` through pull request #2 after tests and the production build passed in GitHub Actions.
 
-### Day 3 — Advanced (completion candidate)
+### Day 3 — Advanced (complete)
 
-Implemented on `feature/employee-management-day3`:
+Completed and merged to `main` through pull request #3:
 
 - Typed Admin and Employee demo sessions
 - Permission-aware employee management controls
@@ -94,10 +94,10 @@ Implemented on `feature/employee-management-day3`:
 - Responsive advanced HR panels and explicit empty/error/permission states
 - Reproducible `npm ci` installs with a synchronized dependency lockfile
 
-The suite now contains 71 tests. The final delivery gate is GitHub Actions verification and merge of pull request #3.
+The suite contains 71 tests. GitHub Actions run #22 passed dependency installation, the full test step, and the production build before pull request #3 was merged.
 
 Employee, review, payroll, and activity records currently use browser-local persistence for the portfolio demo. A production deployment would move identity, authorization, and HR records behind an authenticated server API. The visible role switcher demonstrates permission-aware UI behavior; it does not authenticate a real user.
 
 ## Delivery
 
-Day 1 and Day 2 are merged into `main`. Day 3 is awaiting final CI and merge from pull request #3.
+Day 1, Day 2, and Day 3 are merged into `main`. The staged employee-management roadmap is complete.
